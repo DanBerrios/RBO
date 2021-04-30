@@ -76,7 +76,7 @@ all_main: $(MAIN_FILES)
 
 
 
-IMPORTS =  ro bfo pato chmo envo obi uo chebi doid
+IMPORTS =  ro bfo pato chmo envo obi uo chebi doid uberon
 
 
 IMPORT_ROOTS = $(patsubst %, imports/%_import, $(IMPORTS))
@@ -346,6 +346,15 @@ mirror/doid.trigger: $(SRC)
 
 mirror/doid.owl: mirror/doid.trigger
 	if [ $(MIR) = true ] && [ $(IMP) = true ]; then $(ROBOT) convert -I $(URIBASE)/doid/subsets/DO_RAD_slim.owl -o $@.tmp.owl && mv $@.tmp.owl $@; fi
+
+.PRECIOUS: mirror/%.owl
+
+## ONTOLOGY: uberon
+## Copy of uberon is re-downloaded whenever source changes
+mirror/uberon.trigger: $(SRC)
+
+mirror/uberon.owl: mirror/uberon.trigger
+	if [ $(MIR) = true ] && [ $(IMP) = true ]; then $(ROBOT) convert -I $(URIBASE)/uberon.owl -o $@.tmp.owl && mv $@.tmp.owl $@; fi
 
 .PRECIOUS: mirror/%.owl
 
